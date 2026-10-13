@@ -1,6 +1,6 @@
 # Temp Clipboard — temp.thpl.me
 
-[ไทย](README.md) · [English](README.en.md) · **中文**
+[ไทย](README.th.md) · [English](README.md) · **中文**
 
 一个临时的粘贴板：贴下**文字 + 图片**，点「复制」就能用到任何地方。
 所有数据都保存在用户自己的浏览器里（IndexedDB）——**没有服务器、没有数据库、没有账号**。

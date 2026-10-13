@@ -1,80 +1,79 @@
 # Temp Clipboard — temp.thpl.me
 
-**ไทย** · [English](README.en.md) · [中文](README.zh.md)
+[ไทย](README.th.md) · **English** · [中文](README.zh.md)
 
-เว็บบอร์ดชั่วคราวสำหรับฝาก **ข้อความ + รูป** แล้วกด "คัดลอก" ไปวางใช้ที่อื่นได้ทันที
-ข้อมูลทั้งหมดเก็บอยู่ในเบราว์เซอร์ของผู้ใช้เอง (IndexedDB) — **ไม่มีเซิร์ฟเวอร์ ไม่มีฐานข้อมูล ไม่มีบัญชี**
+A temporary board for dropping **text + images**, then hitting "Copy" to paste them anywhere.
+All data is stored in the user's own browser (IndexedDB) — **no server, no database, no account**.
 
-## ฟีเจอร์
+## Features
 
-- โพสต์ข้อความ + รูป (สูงสุด 4 รูป/โพสต์): พิมพ์เอง / วางด้วย Ctrl+V / ลากมาวาง / เลือกไฟล์
-- ย่อรูปอัตโนมัติก่อนเก็บ (กว้างสุด 1600px, JPEG) — ประหยัดพื้นที่ คัดลอกไว
-- คัดลอกแยกปุ่ม: ข้อความ / รูป (Clipboard API) + ปุ่มดาวน์โหลดรูปสำรอง (จำเป็นบน iPhone)
-- ลบรายการ / ล้างทั้งหมด / กู้คืนรายการที่เพิ่งลบ (Undo) / ลบอัตโนมัติ 1–30 วัน / โหมดชั่วคราว (ไม่บันทึก)
-- ธีมมืด–สว่าง + 3 ภาษา: **ไทย / จีน / อังกฤษ** (ค่าเริ่มต้นตามภาษาเบราว์เซอร์ สลับแล้วจำค่า)
-- PWA — ติดตั้งเป็นแอปบนมือถือ + เปิดใช้แบบออฟไลน์ได้ (Service Worker)
-- แสดงจำนวนโพสต์ + พื้นที่ที่ใช้ และเตือนเมื่อใกล้เต็ม
+- Post text + images (up to 4 per post): type, paste with Ctrl+V, drag & drop, or choose files
+- Images auto-resized before saving (max width 1600px, JPEG) — saves space, faster copying
+- Separate copy buttons: text / image (Clipboard API) + a download fallback (required on iPhone)
+- Delete items / clear all / undo the latest delete / auto-delete after 1–30 days / temporary mode (no saving)
+- Dark–light theme + 3 languages: **Thai / Chinese / English** (auto-detects browser language, remembers your choice)
+- PWA — install it on your phone + works offline (Service Worker)
+- Shows post count + storage used, warns when almost full
 
-## โครงสร้างไฟล์
+## Project structure
 
-| ไฟล์ / โฟลเดอร์ | หน้าที่ |
+| File / folder | Purpose |
 | --- | --- |
-| `index.html` | โครงหน้าเว็บ (ข้อความไทยเป็นค่าเริ่มต้นใน HTML) |
-| `assets/styles.css` | ธีม/สไตล์ทั้งหมด (แก้สีที่ `:root` กับ `html[data-theme="dark"]`) |
-| `assets/i18n.js` | ข้อความ UI ทั้ง 3 ภาษา — แก้คำแปลที่นี่ |
-| `assets/app.js` | ลอจิก: IndexedDB, อัดรูป, คลิปบอร์ด, ลบ/กู้คืน, ตั้งค่า |
-| `assets/fonts/` + `assets/fonts.css` | ฟอนต์ Noto Sans Thai/Lao (สร้างใหม่ได้ด้วย `npm run setup`) |
-| `assets/icon.svg`, `icon-192.png`, `icon-512.png` | ไอคอนแอป/PWA |
-| `manifest.webmanifest`, `sw.js` | PWA + แคชออฟไลน์ (bump `VERSION` ใน `sw.js` เมื่อแก้ไฟล์) |
-| `tools/` | สคริปต์เตรียมไฟล์ (ดึงฟอนต์ / ไอคอน / บิลด์) + ต้นฉบับไอคอน |
-| `qa.html` | หน้าช่วยเทสต์ในเครื่อง (seed ตัวอย่าง + ใช้ถ่ายสกรีนช็อต) — ไม่ใช้บน production |
+| `index.html` | Page structure (Thai text as the default in HTML) |
+| `assets/styles.css` | All themes/styles (edit colors at `:root` and `html[data-theme="dark"]`) |
+| `assets/i18n.js` | UI strings in all 3 languages — edit translations here |
+| `assets/app.js` | Logic: IndexedDB, image compression, clipboard, delete/restore, settings |
+| `assets/fonts/` + `assets/fonts.css` | Noto Sans Thai/Lao fonts (regenerate with `npm run setup`) |
+| `assets/icon.svg`, `icon-192.png`, `icon-512.png` | App/PWA icons |
+| `manifest.webmanifest`, `sw.js` | PWA + offline cache (bump `VERSION` in `sw.js` after edits) |
+| `tools/` | File-preparation scripts (fonts / icons / build) + icon source |
+| `qa.html` | Local test helper (seeds sample data + used for screenshots) — not used in production |
 
-> หมายเหตุ: ไฟล์ binary (ฟอนต์ `.woff2`, ไอคอน PNG) ไม่ได้ commit ลง git โดยตรง
-> แต่สร้างใหม่ได้จากสคริปต์ — ดู "วิธีรันในเครื่อง"
+> Note: binary files (`.woff2` fonts, PNG icons) are not committed directly — they can be regenerated with the scripts; see "Run locally".
 
-## วิธีรันในเครื่อง
+## Run locally
 
-ต้องมี Node.js 18+ (สำหรับสคริปต์เตรียมไฟล์) และเบราว์เซอร์รุ่นใหม่
+Requires Node.js 18+ (for the prep scripts) and a modern browser.
 
 ```bash
-npm run setup     # ดาวน์โหลดฟอนต์ไทย/ลาว → assets/fonts/ และถอดรหัสไอคอน
-npx serve .       # วิธีใดวิธีหนึ่ง (หรือใช้ VS Code Live Server)
-# หรือ
+npm run setup     # download Thai/Lao fonts → assets/fonts/ and decode icons
+npx serve .       # either method (or VS Code Live Server)
+# or
 python -m http.server 8080
 ```
 
-เปิด `http://localhost:8080` — คลิปบอร์ดทำงานเต็มรูปแบบบน `localhost` หรือเว็บ HTTPS
+Open `http://localhost:8080` — the clipboard works fully on `localhost` or HTTPS.
 
-## บิลด์สำหรับ deploy
+## Build for deploy
 
 ```bash
-npm run build     # → dist/  (คัดไฟล์ + ดึงฟอนต์ + ถอดรหัสไอคอนให้ครบ)
+npm run build     # → dist/  (copies files + fetches fonts + decodes icons)
 ```
 
-โฟลเดอร์ `dist/` พร้อมอัปโหลดขึ้น static host ใดก็ได้ (Cloudflare Pages / Workers ฯลฯ)
+`dist/` is ready to upload to any static host (Cloudflare Pages / Workers, etc.)
 
-## วิธีปรับแต่ง
+## Customization
 
-| อยากแก้ | ไปที่ |
+| Want to change | Go to |
 | --- | --- |
-| ข้อความ/คำแปล (3 ภาษา) | `assets/i18n.js` |
-| สี ธีม ระยะห่าง | `assets/styles.css` |
-| จำนวนรูปสูงสุด, คุณภาพรูป, ขนาดย่อ | ค่าคงที่ต้นไฟล์ `assets/app.js` |
-| ฟอนต์ (ตระกูล/น้ำหนัก) | `tools/fetch-fonts.mjs` |
-| ไอคอน | แก้ `tools/icon-source.html` → เรนเดอร์ PNG 512/192 → `node tools/encode-icons.mjs` |
+| Strings/translations (3 languages) | `assets/i18n.js` |
+| Colors, theme, spacing | `assets/styles.css` |
+| Max images, image quality, resize width | constants at the top of `assets/app.js` |
+| Fonts (family/weights) | `tools/fetch-fonts.mjs` |
+| Icons | edit `tools/icon-source.html` → render PNG 512/192 → `node tools/encode-icons.mjs` |
 
 ## Deploy
 
-- **ใช้งานจริงที่ <https://temp.thpl.me>** — deploy อัตโนมัติผ่าน **Cloudflare Pages** (โปรเจกต์ `temp-thpl-me-git`) ทุกครั้งที่ push ขึ้น branch `main`
-- Cloudflare Pages รัน `node tools/build.mjs` ให้เอง (ดึงฟอนต์ + ประกอบ `dist/`) แล้วเสิร์ฟที่โดเมน **temp.thpl.me**
-- ไฟล์ที่ต้องอัปคือผลลัพธ์ของ `npm run build` (`dist/`) — กรณี deploy แบบ manual
-- ข้อมูลผู้ใช้ไม่ได้ขึ้นเซิร์ฟเวอร์เลย — ทุกอย่างอยู่ใน IndexedDB ของเบราว์เซอร์ผู้ใช้
+- **Live at <https://temp.thpl.me>** — auto-deployed via **Cloudflare Pages** (project `temp-thpl-me-git`) on every push to `main`
+- Cloudflare Pages runs `node tools/build.mjs` itself (fetch fonts + assemble `dist/`) and serves it at **temp.thpl.me**
+- Manual deploys: upload the output of `npm run build` (`dist/`)
+- No user data ever reaches a server — it all lives in the user's browser IndexedDB
 
-## ความเป็นส่วนตัว / ความปลอดภัย
+## Privacy / Security
 
-- ข้อความแสดงผลผ่าน `textContent` (กัน XSS) และรูปเก็บเป็น Blob ในเครื่องเท่านั้น
-- ถ้าเปิดลิงก์ให้คนอื่นใช้: อย่าโพสต์ข้อมูลส่วนตัว เพราะข้อมูลอยู่ในเครื่องของแต่ละคนแยกกัน
+- Text is rendered via `textContent` (XSS-safe); images stay as local Blobs only
+- Shared the link with others? Don't post personal data — each visitor's data lives only on their own device
 
-## สัญญาอนุญาต (License)
+## License
 
-โปรเจกต์นี้เผยแพร่ภายใต้สัญญาอนุญาต **MIT** — ใช้งาน ดัดแปลง และแจกจ่ายได้อย่างอิสระ เพียงคงข้อความลิขสิทธิ์ไว้ในสำเนา ดูรายละเอียดที่ [LICENSE](LICENSE)
+Released under the **MIT License** — free to use, modify and distribute; just keep the copyright notice. See [LICENSE](LICENSE).
