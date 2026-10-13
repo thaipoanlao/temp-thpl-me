@@ -1,6 +1,6 @@
 /* Temp Clipboard — service worker (offline app shell).
  * Bump VERSION whenever the site files change so clients pick up new files. */
-const VERSION = 'temp-2026-10b';
+const VERSION = 'temp-2026-10c';
 const SHELL = [
   './',
   './index.html',

@@ -102,8 +102,9 @@
         }
       }
 
-      var th = fd.querySelector('.lang[data-lang="th"]');
-      if (th) th.click();
+      var LANG = ((location.search.match(/[?&]lang=(th|zh|en)(?:&|$)/) || [])[1]) || 'th';
+      var lb = fd.querySelector('.lang[data-lang="' + LANG + '"]');
+      if (lb) lb.click();
       if (fd.documentElement.getAttribute('data-theme') === 'dark') {
         fd.getElementById('theme-toggle').click();
       }

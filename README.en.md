@@ -11,7 +11,7 @@ All data is stored in the user's own browser (IndexedDB) — **no server, no dat
 - Images auto-resized before saving (max width 1600px, JPEG) — saves space, faster copying
 - Separate copy buttons: text / image (Clipboard API) + a download fallback (required on iPhone)
 - Delete items / clear all / undo the latest delete / auto-delete after 1–30 days / temporary mode (no saving)
-- Dark–light theme + 3 languages: **Thai / Lao / English** (auto-detects browser language, remembers your choice)
+- Dark–light theme + 3 languages: **Thai / Chinese / English** (auto-detects browser language, remembers your choice)
 - PWA — install it on your phone + works offline (Service Worker)
 - Shows post count + storage used, warns when almost full
 

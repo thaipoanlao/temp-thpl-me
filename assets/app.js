@@ -3,7 +3,7 @@
  * - Composer: text + up to 4 images (paste / drag-drop / file picker)
  * - Images compressed to JPEG (max 1600px) before storing
  * - Clipboard: copy text / copy image (PNG) with fallbacks
- * - i18n th/lo/en · light/dark theme · auto-expire · temporary mode
+ * - i18n th/zh/en · light/dark theme · auto-expire · temporary mode
  */
 (() => {
   'use strict';
@@ -142,7 +142,7 @@
     const langs = navigator.languages || [navigator.language || ''];
     for (const l of langs) {
       const v = String(l).toLowerCase();
-      if (v.indexOf('lo') === 0) return 'lo';
+      if (v.indexOf('zh') === 0) return 'zh';
       if (v.indexOf('th') === 0) return 'th';
       if (v.indexOf('en') === 0) return 'en';
     }

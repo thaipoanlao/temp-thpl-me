@@ -39,8 +39,9 @@
     await w.__TC__.ready;
     var d = pair[1].contentDocument;
     var de = d.documentElement;
-    var th = d.querySelector('.lang[data-lang="th"]');
-    if (th) th.click();
+    var LANG = ((location.search.match(/[?&]lang=(th|zh|en)(?:&|$)/) || [])[1]) || 'th';
+    var lb = d.querySelector('.lang[data-lang="' + LANG + '"]');
+    if (lb) lb.click();
     if (de.getAttribute('data-theme') === 'dark') d.getElementById('theme-toggle').click();
     var b = d.getElementById('btn-post').getBoundingClientRect();
     var pb = (b.right <= de.clientWidth + 0.5 && b.left >= -0.5) ? 'OK' : 'CUT';
