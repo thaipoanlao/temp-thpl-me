@@ -421,7 +421,8 @@
     clearDraft();
     render();
     showToast(t('toast.posted'));
-    el.draft.focus();
+    el.draft.focus({ preventScroll: true });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   function doDelete(p) {
     const index = posts.findIndex((x) => x.id === p.id);

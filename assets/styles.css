@@ -113,6 +113,7 @@ html[data-theme="dark"] .i-moon { display: inline-flex; }
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg);
   box-shadow: var(--shadow-1); padding: 16px;
   transition: border-color .18s, box-shadow .18s;
+  margin-top: 28px;
 }
 .composer:focus-within { border-color: var(--line-strong); box-shadow: var(--shadow-2); }
 .composer.drag { border-color: var(--accent); background: var(--accent-soft); box-shadow: var(--shadow-2); }

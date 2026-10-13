@@ -43,6 +43,20 @@
     <p class="lede" data-i18n="app.lede">พิมพ์ข้อความหรือแนบรูป กด “โพสต์” แล้วกดคัดลอกไปวางต่อได้ทันที · ข้อมูลเก็บไว้ในเบราว์เซอร์เครื่องนี้เท่านั้น</p>
   </section>
 
+  <section class="feed-head">
+    <h2 data-i18n="posts.title">โพสต์ล่าสุด</h2>
+    <span id="stats" class="stats" aria-live="polite"></span>
+    <button type="button" id="btn-clear-all" class="clear-all" data-i18n="posts.clearAll">ล้างทั้งหมด</button>
+  </section>
+
+  <section id="feed" class="feed" aria-live="polite"></section>
+
+  <div id="empty" class="empty" hidden>
+    <svg class="empty-mark" width="44" height="44" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" aria-hidden="true"><rect x="24" y="22" width="52" height="60" rx="13"/><rect x="38" y="13" width="24" height="17" rx="8"/><path d="M36 50 H64" stroke-linecap="round"/><path d="M36 64 H54" stroke-linecap="round"/></svg>
+    <p class="empty-title" data-i18n="empty.title">ยังไม่มีโพสต์</p>
+    <p class="empty-hint" data-i18n="empty.hint">เริ่มจากพิมพ์ข้อความหรือแนบรูปด้านล่าง แล้วกด “โพสต์” ได้เลย</p>
+  </div>
+
   <section class="composer" id="composer" data-i18n-aria="a11y.composer">
     <textarea id="draft" rows="2" data-i18n-ph="composer.placeholder" spellcheck="false" placeholder="พิมพ์ข้อความ หรือวาง/ลากรูปมาที่นี่ (Ctrl+V)…"></textarea>
     <div id="attach-strip" class="attach" data-i18n-aria="a11y.attachStrip" hidden></div>
@@ -62,20 +76,6 @@
     </div>
     <p id="temp-note" class="temp-note" hidden data-i18n="composer.sessionNote">โหมดชั่วคราวเปิดอยู่ — ข้อมูลจะไม่ถูกบันทึก และหายเมื่อปิดแท็บ</p>
   </section>
-
-  <section class="feed-head">
-    <h2 data-i18n="posts.title">โพสต์ล่าสุด</h2>
-    <span id="stats" class="stats" aria-live="polite"></span>
-    <button type="button" id="btn-clear-all" class="clear-all" data-i18n="posts.clearAll">ล้างทั้งหมด</button>
-  </section>
-
-  <section id="feed" class="feed" aria-live="polite"></section>
-
-  <div id="empty" class="empty" hidden>
-    <svg class="empty-mark" width="44" height="44" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" aria-hidden="true"><rect x="24" y="22" width="52" height="60" rx="13"/><rect x="38" y="13" width="24" height="17" rx="8"/><path d="M36 50 H64" stroke-linecap="round"/><path d="M36 64 H54" stroke-linecap="round"/></svg>
-    <p class="empty-title" data-i18n="empty.title">ยังไม่มีโพสต์</p>
-    <p class="empty-hint" data-i18n="empty.hint">เริ่มจากพิมพ์ข้อความหรือแนบรูปด้านบน แล้วกด “โพสต์” ได้เลย</p>
-  </div>
 </main>
 
 <footer class="wrap foot">

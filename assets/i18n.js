@@ -34,7 +34,7 @@ window.TCI18N = {
       'post.delete': 'ลบ',
 
       'empty.title': 'ยังไม่มีโพสต์',
-      'empty.hint': 'เริ่มจากพิมพ์ข้อความหรือแนบรูปด้านบน แล้วกด “โพสต์” ได้เลย',
+      'empty.hint': 'เริ่มจากพิมพ์ข้อความหรือแนบรูปด้านล่าง แล้วกด “โพสต์” ได้เลย',
 
       'settings.expire': 'ลบอัตโนมัติ',
       'settings.expireOff': 'ปิด',
@@ -88,7 +88,7 @@ window.TCI18N = {
       'post.delete': 'ລຶບ',
 
       'empty.title': 'ຍັງບໍ່ມີໂພສ',
-      'empty.hint': 'ເລີ່ມຈາກການພິມຂໍ້ຄວາມ ຫຼື ແນບຮູບຂ້າງເທິງ ແລ້ວກົດ “ໂພສ” ໄດ້ເລີຍ',
+      'empty.hint': 'ເລີ່ມຈາກການພິມຂໍ້ຄວາມ ຫຼື ແນບຮູບຂ້າງລຸ່ມ ແລ້ວກົດ “ໂພສ” ໄດ້ເລີຍ',
 
       'settings.expire': 'ລຶບອັດຕະໂນມັດ',
       'settings.expireOff': 'ປິດ',
@@ -143,7 +143,7 @@ window.TCI18N = {
       'post.delete': 'Delete',
 
       'empty.title': 'No posts yet',
-      'empty.hint': 'Start by typing a message or attaching an image above, then hit “Post”',
+      'empty.hint': 'Start by typing a message or attaching an image below, then hit “Post”',
 
       'settings.expire': 'Auto-delete',
       'settings.expireOff': 'Off',
