@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>QA widths — Temp Clipboard</title>
+<style>
+  html, body { margin:0; height:100%; background:#e8e8e4; font:11px monospace; }
+  #bar { position:fixed; bottom:0; left:0; right:0; background:#111; color:#9f9; padding:3px 6px; z-index:9; white-space:nowrap; overflow:hidden; }
+  .row { display:flex; gap:14px; padding:14px 14px 30px; align-items:flex-start; }
+  .frame { background:#fff; border:1px solid #9a9a9a; }
+  iframe { border:0; display:block; background:#fff; }
+  .lbl { color:#333; padding:2px 0; }
+</style>
+</head>
+<body>
+<!-- Width tester: renders the app inside fixed-width iframes (true 360 / 390 CSS px),
+     reports viewport metrics + whether the Post button stays inside the viewport.
+     Uses the same QA profile so seeded posts appear. NOT for production. -->
+<div id="bar">QAW: boot</div>
+<div class="row">
+  <div><div class="lbl">360 x 780</div><div class="frame"><iframe id="f1" width="360" height="780" src="index.html"></iframe></div></div>
+  <div><div class="lbl">390 x 844</div><div class="frame"><iframe id="f2" width="390" height="844" src="index.html"></iframe></div></div>
+</div>
+<script>
+(function () {
+  var bar = document.getElementById('bar');
+  var frames = [['360', document.getElementById('f1')], ['390', document.getElementById('f2')]];
+  async function ready(f) {
+    var w = f.contentWindow;
+    for (var i = 0; i < 300; i++) {
+      if (w.__TC__ && w.__TC__.ready) return w;
+      await new Promise(function (r) { setTimeout(r, 25); });
+    }
+    return null;
+  }
+  Promise.all(frames.map(async function (pair) {
+    var w = await ready(pair[1]);
+    if (!w) return pair[0] + ':NO-HOOK';
+    await w.__TC__.ready;
+    var d = pair[1].contentDocument;
+    var de = d.documentElement;
+    var th = d.querySelector('.lang[data-lang="th"]');
+    if (th) th.click();
+    if (de.getAttribute('data-theme') === 'dark') d.getElementById('theme-toggle').click();
+    var b = d.getElementById('btn-post').getBoundingClientRect();
+    var pb = (b.right <= de.clientWidth + 0.5 && b.left >= -0.5) ? 'OK' : 'CUT';
+    return pair[0] + ' vw=' + de.clientWidth + ' sw=' + de.scrollWidth + ' pb=' + pb;
+  })).then(function (lines) {
+    bar.textContent = 'QAW: ' + lines.join(' | ');
+  });
+})();
+</script>
+</body>
+</html>

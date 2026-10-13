@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>QA harness — Temp Clipboard</title>
+<style>
+  html, body { margin:0; height:100%; overflow:hidden; }
+  #bar { position:fixed; bottom:0; left:0; right:0; z-index:9; font:11px/1.5 monospace; background:#111; color:#9f9; padding:2px 6px; white-space:nowrap; overflow:hidden; }
+  iframe { width:100%; height:100%; border:0; display:block; }
+</style>
+</head>
+<body>
+<!-- Local QA harness v3: seeds demo posts DIRECTLY into IndexedDB (deterministic),
+     reloads the app, forces Thai + light theme, reports objective metrics via beacon.
+     NOT for production. -->
+<div id="bar">QA3: boot</div>
+<iframe id="app"></iframe>
+<script>
+(function () {
+  var bar = document.getElementById('bar');
+  var log = function (s) { bar.textContent = s; };
+  var f = document.getElementById('app');
+  var fi, fd;
+  var reloaded = false;
+  var NOSEED = /(^|[?&])noseed(&|$)/.test(location.search);
+
+  function openDb() {
+    return new Promise(function (res, rej) {
+      var rq = indexedDB.open('temp-thpl-me', 1);
+      rq.onupgradeneeded = function () {
+        var d = rq.result;
+        if (!d.objectStoreNames.contains('posts')) d.createObjectStore('posts', { keyPath: 'id' });
+        if (!d.objectStoreNames.contains('meta')) d.createObjectStore('meta', { keyPath: 'key' });
+      };
+      rq.onsuccess = function () { res(rq.result); };
+      rq.onerror = function () { rej(rq.error); };
+    });
+  }
+
+  async function seedCheck() {
+    var db = await openDb();
+    var posts = await new Promise(function (res, rej) {
+      var tx = db.transaction('posts', 'readonly');
+      var rq = tx.objectStore('posts').getAll();
+      rq.onsuccess = function () { res(rq.result || []); };
+      rq.onerror = function () { rej(rq.error); };
+    });
+    if (posts.length >= 2) return { seeded: false, count: posts.length };
+
+    var r = await fetch('assets/icon-512.png');
+    var imgBlob = await r.blob();
+    await new Promise(function (res, rej) {
+      var tx = db.transaction('posts', 'readwrite');
+      var store = tx.objectStore('posts');
+      store.clear();
+      var now = Date.now();
+      store.put({
+        id: 'qa1', createdAt: now - 2000,
+        text: 'ลิงก์อ้างอิง: docs.google.com/sheet/… (ตัวอย่างข้อความ)',
+        images: []
+      });
+      store.put({
+        id: 'qa2', createdAt: now,
+        text: 'สรุปประชุมทีม — ลูกค้าขอเลื่อนส่งงานเป็นสัปดาห์หน้า และขอไฟล์ตัวอย่างเพิ่มก่อนส่งจริง (ข้อความตัวอย่าง)',
+        images: [{ id: 'qai1', blob: imgBlob, w: 512, h: 512, name: 'qa-sample.png' }]
+      });
+      tx.oncomplete = function () { res(); };
+      tx.onerror = function () { rej(tx.error); };
+    });
+    return { seeded: true, count: 2 };
+  }
+
+  function metrics(TC) {
+    var de = fd.documentElement;
+    return 'count=' + TC.state().count + ' lang=' + TC.state().settings.lang +
+      ' theme=' + de.getAttribute('data-theme') +
+      ' sw=' + de.scrollWidth + ' vw=' + de.clientWidth;
+  }
+
+  async function beacon(qs) {
+    try { await fi.fetch('http://127.0.0.1:8798/QA?' + qs, { mode: 'no-cors' }); } catch (e) { /* ignore */ }
+  }
+
+  f.addEventListener('load', async function () {
+    fi = f.contentWindow;
+    fd = f.contentDocument;
+    try {
+      for (var i = 0; i < 240 && !(fi.__TC__ && fi.__TC__.ready); i++) {
+        await new Promise(function (r) { setTimeout(r, 25); });
+      }
+      var TC = fi.__TC__;
+      if (!TC) { log('QA3 ERR: no hook'); await beacon('err=nohook'); return; }
+      await TC.ready;
+
+      if (!reloaded && !NOSEED) {
+        var res = await seedCheck();
+        if (res.seeded) {
+          reloaded = true;
+          log('QA3: seeded via db, reloading…');
+          f.src = 'index.html?r=' + Date.now();
+          return;
+        }
+      }
+
+      var th = fd.querySelector('.lang[data-lang="th"]');
+      if (th) th.click();
+      if (fd.documentElement.getAttribute('data-theme') === 'dark') {
+        fd.getElementById('theme-toggle').click();
+      }
+      var m = metrics(TC);
+      log('QA3 done: ' + m);
+      await beacon(m);
+    } catch (err) {
+      var msg = err && err.message ? err.message : String(err);
+      log('QA3 ERR: ' + msg);
+      await beacon('err=' + encodeURIComponent(msg));
+    }
+  });
+
+  f.src = 'index.html';
+})();
+</script>
+</body>
+</html>

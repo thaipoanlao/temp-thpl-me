@@ -1,0 +1,11 @@
+# generated / fetched artifacts (recreate with `npm run setup`)
+dist/
+assets/fonts/
+assets/fonts.css
+assets/icon-192.png
+assets/icon-512.png
+
+# misc
+node_modules/
+.DS_Store
+.env*

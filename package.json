@@ -1,0 +1,10 @@
+{
+  "name": "temp-thpl-me",
+  "version": "1.0.0",
+  "private": true,
+  "description": "บอร์ดชั่วคราวสำหรับฝากข้อความและรูป — https://temp.thpl.me",
+  "scripts": {
+    "setup": "node tools/fetch-fonts.mjs . assets && node tools/decode-icons.mjs . assets",
+    "build": "node tools/build.mjs"
+  }
+}
